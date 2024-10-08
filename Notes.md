@@ -15,6 +15,9 @@ docker run -it test:pandas some_number
 
 Running Postgres in a container:
 
+mkdir ny_taxi_postgres_data
+sudo chmod 755 ny_taxi_postgres_data
+
 docker run -it \
   -e POSTGRES_USER="root" \
   -e POSTGRES_PASSWORD="root" \
