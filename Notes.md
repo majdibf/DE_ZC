@@ -15,8 +15,8 @@ docker run -it test:pandas some_number
 
 Running Postgres in a container:
 
-mkdir ny_taxi_postgres_data
-sudo chmod 755 ny_taxi_postgres_data
+mkdir week_1_basics_n_setup/2_docker_sql/ny_taxi_postgres_data
+sudo chmod 755 week_1_basics_n_setup/2_docker_sql/ny_taxi_postgres_data
 
 docker run -it \
   -e POSTGRES_USER="root" \
@@ -57,3 +57,24 @@ wc -l yellow_head.csv
 
 pip install sqlalchemy
 pip install psycopg2-binary
+
+Running pgAdmin & postgres in the same network:
+docker network create pg-network
+
+docker run -it \
+  -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+  -e PGADMIN_DEFAULT_PASSWORD="root" \
+  -p 8080:80 \
+  --network=pg-network \
+  --name=pgadmin \
+  dpage/pgadmin4
+
+docker run -it \
+  -e POSTGRES_USER="root" \
+  -e POSTGRES_PASSWORD="root" \
+  -e POSTGRES_DB="ny_taxi" \
+  -v $(pwd)/ny_taxi_postgres_data:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  --network=pg-network \
+  --name=pg-database \
+  postgres:13
