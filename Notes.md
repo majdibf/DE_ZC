@@ -1,0 +1,56 @@
+Data Engineering is the design and development of systems for collecting, storing and analyzing data at scale.
+
+A data pipeline is a service that receives data as input and outputs more data. For example, reading a CSV file, transforming the data somehow and storing it as a table in a PostgreSQL database.
+
+Docker is a containerization software that allows us to isolate software in a similar way to virtual machines but in a much leaner way.
+A Docker image is a snapshot of a container that we can define to run our software, or in this case our data pipelines. By exporting our Docker images to Cloud providers such as Amazon Web Services or Google Cloud Platform we can run our containers there.
+
+Docker containers are stateless: any changes done inside a container will NOT be saved when the container is killed and started again.
+
+build the image:
+docker build -t test:pandas
+
+run docker container from image:
+docker run -it test:pandas some_number
+
+Running Postgres in a container:
+
+docker run -it \
+  -e POSTGRES_USER="root" \
+  -e POSTGRES_PASSWORD="root" \
+  -e POSTGRES_DB="ny_taxi" \
+  -v $(pwd)/ny_taxi_postgres_data:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  postgres:13
+
+If you see that ny_taxi_postgres_data is empty after running the container, try these:
+    Deleting the folder and running Docker again (Docker will re-create the folder)
+    Adjust the permissions of the folder by running sudo chmod a+rwx ny_taxi_postgres_data
+
+Once the container is running, we can log into our database with pgcli with the following command:
+pip install pgcli 
+pip install "psycopg2[binary]"
+sudo apt-get install libpq5
+
+pgcli -h localhost -p 5432 -u root -d ny_taxi
+
+pgcli --help
+
+pip install jupyter
+jupyter notebook
+
+NY Trips Dataset:
+https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz
+https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf
+
+wget https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz 
+gzip -d yellow_tripdata_2021-01.csv.gz  :The command will restore the compressed file to its original state and remove the .gz file.
+gzip -dk yellow_tripdata_2021-01.csv.gz  : to keep the compressed file
+
+head -n 100 yellow_tripdata_2021-01.csv
+head -n 100 yellow_tripdata_2021-01.csv > yellow_head.csv
+
+wc -l yellow_head.csv
+
+pip install sqlalchemy
+pip install psycopg2-binary
