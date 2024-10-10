@@ -92,3 +92,30 @@ python ingest_data.py \
   --db=ny_taxi \
   --table_name=yellow_taxi_trips \
   --url=${URL}
+
+build taxi_ingest from dockerfile:
+docker build -t taxi_ingest:v001 .
+
+run taxi_ingest container:
+
+docker run  -it --network=pg-network \
+  taxi_ingest:v001 \
+  --user=root \
+  --password=root \
+  --host=pg-database \
+  --port=5432 \
+  --db=ny_taxi \
+  --table_name=yellow_taxi_trips \
+  --url=${URL}
+
+
+strat services with:
+docker-compose up
+docker-compose -d up
+
+docker compose up
+docker compose -d up
+
+Stop services with:
+docker-compose down
+docker compose down
