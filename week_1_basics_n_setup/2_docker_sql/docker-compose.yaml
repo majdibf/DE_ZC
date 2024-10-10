@@ -1,6 +1,7 @@
 services:
   pgdatabase:
     image: postgres:13
+    container_name: pg-database
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD= root

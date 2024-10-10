@@ -119,3 +119,20 @@ docker compose -d up
 Stop services with:
 docker-compose down
 docker compose down
+
+
+docker-compose create a default network named according to the following format :
+<folder_name>_default
+2_docker_sql_default
+
+docker run  -it --network=2_docker_sql_default \
+  taxi_ingest:v001 \
+  --user=root \
+  --password=root \
+  --host=pg-database \
+  --port=5432 \
+  --db=ny_taxi \
+  --table_name=yellow_taxi_trips \
+  --url=${URL}
+
+
