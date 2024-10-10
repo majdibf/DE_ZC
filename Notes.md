@@ -136,3 +136,5 @@ docker run  -it --network=2_docker_sql_default \
   --url=${URL}
 
 
+taxi zones url:
+https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv
