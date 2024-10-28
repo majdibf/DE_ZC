@@ -1,3 +1,5 @@
+#WEEK 1
+
 Data Engineering is the design and development of systems for collecting, storing and analyzing data at scale.
 
 A data pipeline is a service that receives data as input and outputs more data. For example, reading a CSV file, transforming the data somehow and storing it as a table in a PostgreSQL database.
@@ -138,3 +140,39 @@ docker run  -it --network=2_docker_sql_default \
 
 taxi zones url:
 https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv
+
+install terraform:
+wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install terraform
+
+Set environment variable to point the GCP keys: 
+export GOOGLE_APPLICATION_CREDENTIALS="/home/mbenfredj/terrademo/keys/my-creds.json"
+
+
+#WEEK 2
+
+cd ~ && mkdir -p ~/.google/credentials/
+mv ~/Bureau/terraform-demo-438421-383ae38d40e7.json ~/.google/credentials/google_credentials.json
+
+mkdir -p ./dags ./logs ./plugins
+echo -e "AIRFLOW_UID=$(id -u)" > .env
+
+#Build the image when there's any change in the Dockerfile
+docker-compose build
+
+#Initialize the Airflow scheduler, DB, and other config
+docker-compose up airflow-init
+
+#Kick up the all the services from the container
+docker-compose up
+
+#see which containers are up & running (there should be 7, matching with the services in your docker-compose file)
+docker-compose ps
+
+
+#Login to Airflow web UI with default creds: airflow/airflow
+localhost:8080
+
+#shut down the container/s:
+docker-compose down
