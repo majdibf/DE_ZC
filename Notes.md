@@ -141,6 +141,23 @@ docker run  -it --network=2_docker_sql_default \
 taxi zones url:
 https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv
 
+
+Terraform installation:
+wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install terraform
+
+export GOOGLE_CREDENTIALS='/home/mbenfredj/data-engineering-zc/week_1_basics_n_setup/1_terraform/terrademo/keys/my-creds.json'
+
+terraform fmt
+terraform init
+terraform plan
+terraform apply
+terraform destroy
+
+Unset linux variable:
+unset GOOGLE_CREDENTIALS
+
 install terraform:
 wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
