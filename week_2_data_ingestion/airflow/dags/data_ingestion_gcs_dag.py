@@ -14,11 +14,14 @@ import pyarrow.parquet as pq
 PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
 BUCKET = os.environ.get("GCP_GCS_BUCKET")
 
+dataset_file_gz= "yellow_tripdata_2021-01.csv.gz"
 dataset_file = "yellow_tripdata_2021-01.csv"
-dataset_url = f"https://s3.amazonaws.com/nyc-tlc/trip+data/{dataset_file}"
+
+# dataset_url = f"https://s3.amazonaws.com/nyc-tlc/trip+data/{dataset_file}"
+dataset_url = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/{dataset_file_gz}"
 path_to_local_home = os.environ.get("AIRFLOW_HOME", "/opt/airflow/")
 parquet_file = dataset_file.replace('.csv', '.parquet')
-BIGQUERY_DATASET = os.environ.get("BIGQUERY_DATASET", 'demo_dataset')
+BIGQUERY_DATASET = os.environ.get("BIGQUERY_DATASET", 'trips_data_all')
 
 
 def format_to_parquet(src_file):
@@ -60,18 +63,16 @@ default_args = {
 
 # NOTE: DAG declaration - using a Context Manager (an implicit way)
 with DAG(
-    dag_id="data_ingestion_gcs_dag",
-    schedule_interval="@daily",
-    default_args=default_args,
-    catchup=False,
-    max_active_runs=1,
-    tags=['dtc-de'],
+        dag_id="data_ingestion_gcs_dag",
+        schedule_interval="@daily",
+        default_args=default_args,
+        catchup=False,
+        max_active_runs=1,
+        tags=['dtc-de'],
 ) as dag:
-
     download_dataset_task = BashOperator(
         task_id="download_dataset_task",
-        bash_command=f"curl -sSL {dataset_url} > {path_to_local_home}/{dataset_file}"
-    )
+        bash_command=f"curl -sSL {dataset_url} | gunzip > {path_to_local_home}/yellow_tripdata_2021-01.csv")
 
     format_to_parquet_task = PythonOperator(
         task_id="format_to_parquet_task",

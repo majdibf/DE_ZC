@@ -1,6 +1,6 @@
 variable "credentials" {
   description = "My Credentials"
-  default     = "./keys/my-creds.json"
+  default     = "~/.google/credentials/google_credentials.json"
 }
 
 
@@ -21,7 +21,7 @@ variable "location" {
 
 variable "bq_dataset_name" {
   description = "My BigQuery Dataset Name"
-  default     = "demo_dataset"
+  default     = "trips_data_all"
 }
 
 variable "gcs_bucket_name" {
