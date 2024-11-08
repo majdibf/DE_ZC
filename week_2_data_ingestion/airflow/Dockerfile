@@ -32,6 +32,8 @@ RUN DOWNLOAD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/goo
 
 USER airflow
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir pandas sqlalchemy psycopg2-binary
+
 
 WORKDIR $AIRFLOW_HOME
 

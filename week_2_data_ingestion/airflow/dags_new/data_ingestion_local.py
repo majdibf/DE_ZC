@@ -9,11 +9,13 @@ from airflow.operators.python import PythonOperator
 from ingest_script import ingest_callable
 
 
+
 local_workflow = DAG(
     "LocalIngestionDag" ,
     schedule_interval= "0 6 2 * *",
-    start_date=datetime(2021, 1, 1)
-)
+    start_date=datetime(2021, 1, 1),
+    catchup=False
+    )
 
 AIRFLOW_HOME = os.environ.get("AIRFLOW_HOME", "/opt/airflow/")
 
